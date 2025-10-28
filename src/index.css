@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Global font dan warna dasar */
+:root {
+  --font-main: "Poppins", sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #f9fafb;
+  color: #111827;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Mode gelap opsional */
+.dark body {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* Animasi custom */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
