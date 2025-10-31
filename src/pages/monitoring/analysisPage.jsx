@@ -88,33 +88,31 @@ const AnalysisPage = () => {
       ];
     
       const alarms = [
-    {
-      id: 1,
-      title: "High Temperature Detected",
-      message: "Sensor Suhu A1 mencatat suhu 85°C (di atas ambang batas).",
-      time: "23/10/2025 10:15",
-    },
-    {
-      id: 2,
-      title: "Abnormal Vibration Level",
-      message: "Sensor Vibrasi B2 menunjukkan getaran tidak normal.",
-      time: "23/10/2025 09:52",
-    },
-    {
-      id: 3,
-      title: "Pressure Drop",
-      message: "Tekanan di Area C turun di bawah 1.0 bar.",
-      time: "23/10/2025 08:27",
-    },
-    {
-      id: 4,
-      title: "Power Interruption",
-      message: "Pasokan daya di Area B sempat terputus 3 detik.",
-      time: "22/10/2025 17:46",
-    },
-  ];
-
-  const visibleAlarms = alarms.slice(0, 3);
+        {
+          id: 1,
+          title: "High Temperature Detected",
+          message: "Sensor Suhu A1 mencatat suhu 85°C (di atas ambang batas).",
+          time: "23/10/2025 10:15",
+        },
+        {
+          id: 2,
+          title: "Abnormal Vibration Level",
+          message: "Sensor Vibrasi B2 menunjukkan getaran tidak normal.",
+          time: "23/10/2025 09:52",
+        },
+        {
+          id: 3,
+          title: "Pressure Drop",
+          message: "Tekanan di Area C turun di bawah 1.0 bar.",
+          time: "23/10/2025 08:27",
+        },
+        {
+          id: 4,
+          title: "Power Interruption",
+          message: "Pasokan daya di Area B sempat terputus 3 detik.",
+          time: "22/10/2025 17:46",
+        },
+      ];
 
     // data statistic
     const dataX = [
@@ -145,9 +143,10 @@ const AnalysisPage = () => {
     const [selectedRange, setSelectedRange] = useState("1H");
     const ranges = ["1H", "1D", "4D", "1W", "15D", "1M", "3M", "6M", "1Y"];
 
-    const [showAll, setShowAll] = useState(false);
+    const [showAllEvents, setShowAllEvents] = useState(false);
+    const [showAllAlarms, setShowAllAlarms] = useState(false);
     
-
+    const visibleAlarms = alarms.slice(0, 3);
     // tampilkan hanya 3 item di dashboard
     const visibleEvents = events.slice(0, 3);
 
@@ -327,22 +326,29 @@ const AnalysisPage = () => {
                   </div>
                 )}
               </div>
+              
+
             </div>
           </section>
       
           {/* MOST RECENT SECTION */}
-          <section className="flex flex-wrap justify-between items-center mb-6">
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-sm text-gray-700">Most Recent</span>
-              <div className="flex bg-gray-50 rounded-lg p-1 space-x-1 overflow-x-auto scrollbar-hide">
+          <section className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+            {/* Left Side */}
+            <div className="flex items-center gap-4">
+              <h2 className="text-base md:text-lg font-semibold text-gray-800 flex items-center gap-2">
+                Most Recent
+              </h2>
+
+              {/* Range Selector */}
+              <div className="flex bg-gray-50 border border-gray-200 rounded-xl p-1 space-x-1 overflow-x-auto scrollbar-hide">
                 {ranges.map((range) => (
                   <button
                     key={range}
                     onClick={() => setSelectedRange(range)}
-                    className={`px-3 py-1 text-sm rounded-md transition-all ${
+                    className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all whitespace-nowrap ${
                       selectedRange === range
-                        ? "bg-indigo-600 text-white"
-                        : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        ? "bg-indigo-600 text-white shadow-sm"
+                        : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-700"
                     }`}
                   >
                     {range}
@@ -350,70 +356,170 @@ const AnalysisPage = () => {
                 ))}
               </div>
             </div>
-      
-            <div className="flex items-center gap-2 text-sm">
+
+            {/* Right Side */}
+            <div className="flex items-center gap-3 text-sm">
               <button
                 onClick={handlePrevious}
                 disabled={currentIndex === 0}
-                className={`flex items-center gap-1 font-medium transition ${
+                className={`flex items-center gap-1.5 font-medium transition ${
                   currentIndex === 0
                     ? "text-gray-400 cursor-not-allowed"
                     : "text-indigo-600 hover:text-indigo-800"
                 }`}
               >
-                ← Previous
+                <span className="text-lg">←</span> Previous
               </button>
+
+              <div className="h-4 w-px bg-gray-200"></div>
+
               <button
                 onClick={handleNext}
                 disabled={currentIndex === ranges.length - 1}
-                className={`flex items-center gap-1 font-medium transition ${
+                className={`flex items-center gap-1.5 font-medium transition ${
                   currentIndex === ranges.length - 1
                     ? "text-gray-400 cursor-not-allowed"
                     : "text-indigo-600 hover:text-indigo-800"
                 }`}
               >
-                Next →
+                Next <span className="text-lg">→</span>
               </button>
             </div>
           </section>
+
       
           {/* RECENT ALARMS & EVENTS */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Recent Alarms */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold text-gray-800">Recent Alarms</h2>
-                <span className="text-xs text-gray-400">Last updated 2 mins ago</span>
-              </div>
-              <div className="h-40 flex items-center justify-center text-gray-500 text-sm">
-                No alarms available
-              </div>
-              <button className="mt-4 w-full py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition">
-                SHOW ALL
-              </button>
-            </div>
-      
-            {/* Recent Events */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 transition-all duration-200 hover:shadow-md">
+            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 transition-all duration-200 hover:shadow-lg">
               {/* HEADER */}
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold text-gray-800">Recent Events</h2>
-                <span className="text-xs text-gray-400">Last updated 5 mins ago</span>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">Recent Alarms</h2>
+                <span className="text-xs text-gray-400">Updated 2 mins ago</span>
               </div>
 
-              {/* LIST EVENT */}
+              {/* ALARM LIST */}
               <div
-                className={`space-y-4 mb-4 ${
-                  events.length > 3 ? "max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300" : ""
+                className={`space-y-3 mb-4 ${
+                  alarms.length > 3
+                    ? "max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 pr-1"
+                    : ""
+                }`}
+              >
+                {visibleAlarms.map((alarm) => (
+                  <div
+                    key={alarm.id}
+                    className="flex justify-between items-start bg-gray-50 border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-red-50/60 transition"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-red-100 rounded-lg flex-shrink-0">
+                        <AlertTriangle className="text-red-600 w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm leading-snug">
+                          {alarm.title}
+                        </p>
+                        <p className="text-sm text-gray-600 leading-snug">
+                          {alarm.message}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 text-xs text-gray-500 items-center whitespace-nowrap">
+                      <Clock size={14} />
+                      <span>{alarm.time}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* SHOW ALL BUTTON */}
+              <button
+                onClick={() => setShowAllAlarms(true)}
+                className="mt-3 w-full py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-all duration-200"
+              >
+                SHOW ALL
+              </button>
+
+              {/* MODAL */}
+              {showAllAlarms && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
+                  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col border border-gray-100">
+                    {/* HEADER */}
+                    <div className="flex items-center justify-between bg-red-600 px-5 py-3">
+                      <h3 className="text-white text-lg font-semibold">All Recent Alarms</h3>
+                      <button
+                        onClick={() => setShowAllAlarms(false)}
+                        className="text-white/80 hover:text-white transition"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+
+                    {/* CONTENT */}
+                    <div className="p-5 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 bg-gray-50 flex-1">
+                      {alarms.map((alarm) => (
+                        <div
+                          key={alarm.id}
+                          className="flex justify-between items-start bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100 hover:shadow-md hover:bg-red-50/50 transition"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="p-2 bg-red-100 rounded-lg flex-shrink-0">
+                              <AlertTriangle className="text-red-600 w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-800 text-sm leading-snug">
+                                {alarm.title}
+                              </p>
+                              <p className="text-sm text-gray-600 leading-snug">
+                                {alarm.message}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 text-xs text-gray-500 items-center whitespace-nowrap">
+                            <Clock size={14} />
+                            <span>{alarm.time}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* FOOTER */}
+                    <div className="bg-gray-50 p-4 text-right">
+                      <button
+                        onClick={() => setShowAllAlarms(false)}
+                        className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Recent Events */}
+            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 transition-all duration-200 hover:shadow-lg">
+              {/* HEADER */}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">Recent Events</h2>
+                <span className="text-xs text-gray-400">Updated 5 mins ago</span>
+              </div>
+
+              {/* EVENT LIST */}
+              <div
+                className={`space-y-3 mb-4 ${
+                  events.length > 3
+                    ? "max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 pr-1"
+                    : ""
                 }`}
               >
                 {visibleEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="flex justify-between items-start border-b border-gray-100 pb-3 hover:bg-indigo-50/40 rounded-lg transition"
+                    className="flex justify-between items-start bg-gray-50 border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-indigo-50/60 transition"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="p-2 bg-indigo-50 rounded-lg flex-shrink-0">
+                      <div className="p-2 bg-indigo-100 rounded-lg flex-shrink-0">
                         <AlertCircleIcon className="text-indigo-600 w-5 h-5" />
                       </div>
                       <p className="text-sm text-gray-700 leading-snug max-w-sm">
@@ -430,38 +536,36 @@ const AnalysisPage = () => {
 
               {/* SHOW ALL BUTTON */}
               <button
-                onClick={() => setShowAll(true)}
-                className="mt-3 w-full py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
+                onClick={() => setShowAllEvents(true)}
+                className="mt-3 w-full py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-all duration-200"
               >
                 SHOW ALL
               </button>
 
               {/* MODAL */}
-              {showAll && (
-                <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                  <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col animate-fadeIn">
-                    {/* Modal Header */}
-                    <div className="flex items-center justify-between border-b p-4">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        All Recent Events
-                      </h3>
+              {showAllEvents && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
+                  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col border border-gray-100">
+                    {/* HEADER */}
+                    <div className="flex items-center justify-between bg-indigo-600 px-5 py-3">
+                      <h3 className="text-white text-lg font-semibold">All Recent Events</h3>
                       <button
-                        onClick={() => setShowAll(false)}
-                        className="text-gray-400 hover:text-gray-600 transition"
+                        onClick={() => setShowAllEvents(false)}
+                        className="text-white/80 hover:text-white transition"
                       >
                         <X size={20} />
                       </button>
                     </div>
 
-                    {/* Modal Content */}
-                    <div className="p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+                    {/* CONTENT */}
+                    <div className="p-5 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 bg-gray-50 flex-1">
                       {events.map((event) => (
                         <div
                           key={event.id}
-                          className="flex justify-between items-start border-b border-gray-100 py-3 hover:bg-indigo-50/40 rounded-lg transition"
+                          className="flex justify-between items-start bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100 hover:shadow-md hover:bg-indigo-50/50 transition"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="p-2 bg-indigo-50 rounded-lg flex-shrink-0">
+                            <div className="p-2 bg-indigo-100 rounded-lg flex-shrink-0">
                               <AlertCircleIcon className="text-indigo-600 w-5 h-5" />
                             </div>
                             <p className="text-sm text-gray-700 leading-snug">
@@ -476,11 +580,11 @@ const AnalysisPage = () => {
                       ))}
                     </div>
 
-                    {/* Modal Footer */}
-                    <div className="border-t p-4 text-right">
+                    {/* FOOTER */}
+                    <div className="bg-gray-50 p-4 text-right">
                       <button
-                        onClick={() => setShowAll(false)}
-                        className="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 transition"
+                        onClick={() => setShowAllEvents(false)}
+                        className="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition"
                       >
                         Close
                       </button>
@@ -490,6 +594,7 @@ const AnalysisPage = () => {
               )}
             </div>
           </section>
+
       
           {/* STATISTIC CHARTS */}
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">

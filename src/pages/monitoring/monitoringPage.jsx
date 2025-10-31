@@ -123,98 +123,102 @@ const MonitoringPage = () => {
 
   return (
     <DashboardLayout>
-      {/* 🔽 Filter Section */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-start sm:space-x-4 space-y-3 sm:space-y-0 mb-6">
-        {/* Dropdown Area */}
-        <div className="relative w-full sm:w-64" ref={areaRef}>
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
-            Pilih Area
-          </label>
-          <div
-            className="border border-gray-200 rounded-xl px-4 py-2.5 bg-white cursor-pointer flex justify-between items-center shadow-sm hover:shadow-md transition-all duration-200"
-            onClick={() => setShowAreaDropdown(!showAreaDropdown)}
-          >
-            <span className="text-gray-800 font-medium truncate">
-              {selectedArea}
-            </span>
-            <span className="text-gray-500 text-sm">▾</span>
-          </div>
-          {showAreaDropdown && (
-            <div className="absolute mt-2 bg-white border border-gray-100 rounded-xl shadow-xl z-20 w-full sm:w-64 overflow-hidden">
-              <div
-                className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-gray-700 text-sm font-medium transition"
-                onClick={() => {
-                  setSelectedArea("ALL");
-                  setSelectedSensor("");
-                  setShowAreaDropdown(false);
-                }}
-              >
-                ALL
-              </div>
-              {allAreas.map((area) => (
+          {/* FILTER SECTION */}
+          <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <div className="flex flex-col md:flex-row md:items-end md:space-x-6 space-y-4 md:space-y-0">
+              {/* Dropdown Area */}
+              <div className="relative w-full md:w-64" ref={areaRef}>
+                <label className="text-sm font-semibold text-gray-700 mb-1 block">
+                  Pilih Area
+                </label>
                 <div
-                  key={area}
-                  className="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-gray-700 text-sm transition"
-                  onClick={() => {
-                    setSelectedArea(area);
-                    setSelectedSensor("");
-                    setShowAreaDropdown(false);
-                  }}
+                  className="border border-gray-200 rounded-xl px-4 py-2.5 bg-white cursor-pointer flex justify-between items-center hover:shadow transition"
+                  onClick={() => setShowAreaDropdown(!showAreaDropdown)}
                 >
-                  {area}
+                  <span className="font-medium text-gray-800 truncate">
+                    {selectedArea}
+                  </span>
+                  <span className="text-gray-500">▾</span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Dropdown Sensor */}
-        <div className="relative w-full sm:w-64" ref={sensorRef}>
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
-            Pilih Sensor
-          </label>
-          <div
-            className="border border-gray-200 rounded-xl px-4 py-2.5 bg-white cursor-pointer flex justify-between items-center shadow-sm hover:shadow-md transition-all duration-200"
-            onClick={() => setShowSensorDropdown(!showSensorDropdown)}
-          >
-            <span className="text-gray-800 font-medium truncate">
-              {selectedSensor || "Pilih Sensor..."}
-            </span>
-            <span className="text-gray-500 text-sm">▾</span>
-          </div>
-          {showSensorDropdown && (
-            <div className="absolute z-20 w-full bg-white border border-gray-100 rounded-xl shadow-xl mt-2 max-h-64 overflow-y-auto">
-              <div className="p-3 border-b border-gray-100 sticky top-0 bg-white">
-                <input
-                  type="text"
-                  placeholder="Cari sensor..."
-                  value={searchSensor}
-                  onChange={(e) => setSearchSensor(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                />
-              </div>
-              {filteredSensors.length > 0 ? (
-                filteredSensors.map((sensor) => (
-                  <div
-                    key={sensor}
-                    className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm text-gray-700 transition"
-                    onClick={() => {
-                      setSelectedSensor(sensor);
-                      setShowSensorDropdown(false);
-                    }}
-                  >
-                    {sensor}
+                {showAreaDropdown && (
+                  <div className="absolute mt-2 bg-white border border-gray-100 rounded-xl shadow-lg z-20 w-full overflow-hidden">
+                    <div
+                      className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-gray-700 text-sm"
+                      onClick={() => {
+                        setSelectedArea("ALL");
+                        setSelectedSensor("");
+                        setShowAreaDropdown(false);
+                      }}
+                    >
+                      ALL
+                    </div>
+                    {allAreas.map((area) => (
+                      <div
+                        key={area}
+                        className="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-gray-700 text-sm"
+                        onClick={() => {
+                          setSelectedArea(area);
+                          setSelectedSensor("");
+                          setShowAreaDropdown(false);
+                        }}
+                      >
+                        {area}
+                      </div>
+                    ))}
                   </div>
-                ))
-              ) : (
-                <p className="p-3 text-gray-500 text-sm text-center">
-                  Sensor tidak ditemukan
-                </p>
-              )}
+                )}
+              </div>
+      
+              {/* Dropdown Sensor */}
+              <div className="relative w-full md:w-64" ref={sensorRef}>
+                <label className="text-sm font-semibold text-gray-700 mb-1 block">
+                  Pilih Sensor
+                </label>
+                <div
+                  className="border border-gray-200 rounded-xl px-4 py-2.5 bg-white cursor-pointer flex justify-between items-center hover:shadow transition"
+                  onClick={() => setShowSensorDropdown(!showSensorDropdown)}
+                >
+                  <span className="font-medium text-gray-800 truncate">
+                    {selectedSensor || "Pilih Sensor..."}
+                  </span>
+                  <span className="text-gray-500">▾</span>
+                </div>
+                {showSensorDropdown && (
+                  <div className="absolute z-20 w-full bg-white border border-gray-100 rounded-xl shadow-lg mt-2 max-h-64 overflow-y-auto">
+                    <div className="p-3 border-b border-gray-100 sticky top-0 bg-white">
+                      <input
+                        type="text"
+                        placeholder="Cari sensor..."
+                        value={searchSensor}
+                        onChange={(e) => setSearchSensor(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-400 outline-none"
+                      />
+                    </div>
+                    {filteredSensors.length > 0 ? (
+                      filteredSensors.map((sensor) => (
+                        <div
+                          key={sensor}
+                          className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-sm text-gray-700"
+                          onClick={() => {
+                            setSelectedSensor(sensor);
+                            setShowSensorDropdown(false);
+                          }}
+                        >
+                          {sensor}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="p-3 text-gray-500 text-sm text-center">
+                        Sensor tidak ditemukan
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+              
+
             </div>
-          )}
-        </div>
-      </div>
+          </section>
 
       {/* 📊 Chart Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
