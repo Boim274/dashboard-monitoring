@@ -65,8 +65,8 @@ const RegisterPage = () => {
     <div
         className={`hidden md:flex w-1/2 items-center justify-center p-10 transition-all duration-700 ${
             isDarkMode
-            ? "bg-gradient-to-br from-indigo-600 to-purple-700"
-            : "bg-gradient-to-br from-indigo-200 to-purple-300"
+            ? "bg-linear-to-br from-indigo-600 to-purple-700"
+            : "bg-linear-to-br from-indigo-200 to-purple-300"
         }`}
     >
         <div
@@ -110,7 +110,7 @@ const RegisterPage = () => {
         >
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <div className="bg-gradient-to-r from-indigo-400 to-blue-500 p-3 rounded-full">
+            <div className="bg-linear-to-r from-indigo-400 to-blue-500 p-3 rounded-full">
               <UserIcon className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -137,7 +137,7 @@ const RegisterPage = () => {
               <div className="relative">
                 <UserIcon
                   className={`absolute left-3 top-2.5 w-5 h-5 ${
-                    isDarkMode ? "text-gray-500" : "text-gray-400"
+                    isDarkMode ? "text-gray-300" : "text-gray-500"
                   }`}
                 />
                 <input
@@ -145,10 +145,10 @@ const RegisterPage = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:ring-2 outline-none ${
+                  className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder-gray-400 ${
                     isDarkMode
                       ? "bg-[#0F172A] border-gray-700 text-gray-200 focus:ring-indigo-400"
-                      : "bg-white border-gray-300 text-gray-800 focus:ring-indigo-400"
+                      : "bg-white border-gray-300 text-gray-900 focus:ring-indigo-400"
                   }`}
                   placeholder="Your name"
                   required
@@ -168,7 +168,7 @@ const RegisterPage = () => {
               <div className="relative">
                 <Mail
                   className={`absolute left-3 top-2.5 w-5 h-5 ${
-                    isDarkMode ? "text-gray-500" : "text-gray-400"
+                    isDarkMode ? "text-gray-300" : "text-gray-500"
                   }`}
                 />
                 <input
@@ -176,12 +176,12 @@ const RegisterPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:ring-2 outline-none ${
+                  className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder-gray-400 ${
                     isDarkMode
                       ? "bg-[#0F172A] border-gray-700 text-gray-200 focus:ring-indigo-400"
-                      : "bg-white border-gray-300 text-gray-800 focus:ring-indigo-400"
+                      : "bg-white border-gray-300 text-gray-900 focus:ring-indigo-400"
                   }`}
-                  placeholder="email"
+                  placeholder="Email address"
                   required
                 />
               </div>
@@ -199,7 +199,7 @@ const RegisterPage = () => {
               <div className="relative">
                 <Lock
                   className={`absolute left-3 top-2.5 w-5 h-5 ${
-                    isDarkMode ? "text-gray-500" : "text-gray-400"
+                    isDarkMode ? "text-gray-300" : "text-gray-500"
                   }`}
                 />
                 <input
@@ -207,12 +207,12 @@ const RegisterPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-10 py-2 rounded-lg border focus:ring-2 outline-none ${
+                  className={`w-full pl-10 pr-10 py-2 rounded-lg border focus:ring-2 outline-none placeholder-gray-400 ${
                     isDarkMode
                       ? "bg-[#0F172A] border-gray-700 text-gray-200 focus:ring-indigo-400"
-                      : "bg-white border-gray-300 text-gray-800 focus:ring-indigo-400"
+                      : "bg-white border-gray-300 text-gray-900 focus:ring-indigo-400"
                   }`}
-                  placeholder="password"
+                  placeholder="Password"
                   required
                 />
                 <button
@@ -220,7 +220,7 @@ const RegisterPage = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-200 transition"
                 >
-                  {showConfirm ? <Eye size={18} /> : <EyeOff  size={18} />}
+                  {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
             </div>
@@ -237,7 +237,7 @@ const RegisterPage = () => {
               <div className="relative">
                 <Lock
                   className={`absolute left-3 top-2.5 w-5 h-5 ${
-                    isDarkMode ? "text-gray-500" : "text-gray-400"
+                    isDarkMode ? "text-gray-300" : "text-gray-500"
                   }`}
                 />
                 <input
@@ -245,12 +245,12 @@ const RegisterPage = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-10 py-2 rounded-lg border focus:ring-2 outline-none ${
+                  className={`w-full pl-10 pr-10 py-2 rounded-lg border focus:ring-2 outline-none placeholder-gray-400 ${
                     error
                       ? "border-red-500 focus:ring-red-400"
                       : isDarkMode
                       ? "bg-[#0F172A] border-gray-700 text-gray-200 focus:ring-indigo-400"
-                      : "bg-white border-gray-300 text-gray-800 focus:ring-indigo-400"
+                      : "bg-white border-gray-300 text-gray-900 focus:ring-indigo-400"
                   }`}
                   placeholder="Confirm Password"
                   required
@@ -260,7 +260,7 @@ const RegisterPage = () => {
                   onClick={() => setShowConfirm(!showConfirm)}
                   className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-200 transition"
                 >
-                  {showConfirm ? <Eye size={18} /> : <EyeOff  size={18} />}
+                  {showConfirm ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
               {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
@@ -310,6 +310,7 @@ const RegisterPage = () => {
               </a>
             </p>
           </form>
+
         </div>
       </div>
     </div>

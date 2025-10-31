@@ -64,7 +64,7 @@ const LoginPage = () => {
         >
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <div className="bg-gradient-to-r from-indigo-400 to-blue-500 p-3 rounded-full">
+            <div className="bg-linear-to-r from-indigo-400 to-blue-500 p-3 rounded-full">
               <Lock className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -106,16 +106,17 @@ const LoginPage = () => {
                   size={18}
                   className={isDarkMode ? "text-gray-400" : "text-gray-500"}
                 />
-                <input
+               <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full bg-transparent outline-none px-2  ${
-                    isDarkMode ? "text-gray-100" : "text-gray-800"
+                  className={`w-full bg-transparent outline-none px-2 placeholder-gray-400 ${
+                    isDarkMode ? "text-gray-200" : "text-gray-900"
                   }`}
-                  placeholder="email"
+                  placeholder="Email address"
                   required
                 />
+
               </div>
             </div>
 
@@ -143,13 +144,12 @@ const LoginPage = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full bg-transparent outline-none px-2 ${
-                    isDarkMode ? "text-gray-100" : "text-gray-800"
+                  className={`w-full bg-transparent outline-none px-2 placeholder-gray-400 ${
+                    isDarkMode ? "text-gray-200" : "text-gray-900"
                   }`}
-                  placeholder="password"
+                  placeholder="Password"
                   required
                 />
-
                 {/* Tombol show/hide password pakai icon lucide-react */}
                 <button
                   type="button"
@@ -210,8 +210,8 @@ const LoginPage = () => {
       <div
         className={`hidden md:flex w-1/2 items-center justify-center p-10 transition-all duration-700 ${
             isDarkMode
-            ? "bg-gradient-to-br from-indigo-600 to-purple-700"
-            : "bg-gradient-to-br from-indigo-200 to-purple-300"
+            ? "bg-linear-to-br from-indigo-600 to-purple-700"
+            : "bg-linear-to-br from-indigo-200 to-purple-300"
         }`}
     >
         <div

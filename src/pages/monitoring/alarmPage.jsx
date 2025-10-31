@@ -113,7 +113,6 @@ const AlarmPage = () => {
           });
         });
       }
-
     useEffect(() => {
         const handleClickOutside = (event) => {
         if (areaRef.current && !areaRef.current.contains(event.target)) {
@@ -126,6 +125,43 @@ const AlarmPage = () => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    // Data dummy 30 event
+  const dummyEvents = Array.from({ length: 30 }, (_, i) => ({
+    id: i + 1,
+    description: [
+      "Alarm high",
+      "System rebooted",
+      "Connection lost",
+      "Power restored",
+      "Sensor failure",
+      "Temperature alert",
+      "Voltage drop",
+      "Maintenance started",
+      "Update completed",
+      "Network unstable",
+    ][i % 10],
+    activationTime: `2023-08-${String((i % 30) + 1).padStart(2, "0")} ${String(
+      8 + (i % 12)
+    ).padStart(2, "0")}:00:00`,
+  }));
+
+  // Pagination setup
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(dummyEvents.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentEvents = dummyEvents.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
       
 
@@ -229,7 +265,7 @@ const AlarmPage = () => {
             </div>
           </section>
 
-       {/* Alarm Setting */}
+        {/* Alarm Setting */}
         <section className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-5">
         <p className="text-lg font-semibold mb-4">Alarm Setting</p>
        
@@ -296,61 +332,70 @@ const AlarmPage = () => {
                 </div>
 
                 {/* Variable Info */}
-                <div className="mb-5">
+                <div className="mb-5 flex items-center">
                     <p className="font-medium text-gray-800">Vibration X</p>
+                    <p>.</p>
                     <p className="text-sm text-gray-500">vibration BE1</p>
                 </div>
 
-                {/* Alarm Form */}
-                <div className="space-y-4">
-                    {/* Alarm Low Value */}
-                    <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Alarm Low Value
-                    </label>
-                    <input
-                        type="number"
-                        placeholder="Masukkan nilai batas bawah"
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    </div>
-
-                    {/* Alarm Low Text */}
-                    <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Alarm Low Text
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Deskripsi alarm low"
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    </div>
-
-                    {/* Alarm High Value */}
-                    <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Alarm High Value
-                    </label>
-                    <input
-                        type="number"
-                        placeholder="Masukkan nilai batas atas"
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    </div>
-
-                    {/* Alarm High Text */}
-                    <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Alarm High Text
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Deskripsi alarm high"
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    </div>
+               {/* Alarm Form */}
+              <div className="space-y-4">
+                {/* Alarm Low Value */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alarm Low Value
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg 
+                              focus:outline-none focus:ring-2 focus:ring-blue-500
+                              placeholder-gray-400 text-gray-900 "
+                  />
                 </div>
+
+                {/* Alarm Low Text */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alarm Low Text
+                  </label>
+                  <textarea type="text"
+                    placeholder="Deskripsi alarm low"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg 
+                              focus:outline-none focus:ring-2 focus:ring-blue-500
+                              placeholder-gray-400 text-gray-900">
+                  </textarea>
+                </div>
+
+                {/* Alarm High Value */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alarm High Value
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg 
+                              focus:outline-none focus:ring-2 focus:ring-blue-500
+                              placeholder-gray-400 text-gray-900"
+                  />
+                </div>
+
+                {/* Alarm High Text */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alarm High Text
+                  </label>
+                  <textarea
+                    type="text"
+                    placeholder="Deskripsi alarm high"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg 
+                              focus:outline-none focus:ring-2 focus:ring-blue-500
+                              placeholder-gray-400 text-gray-900"
+                  />
+                </div>
+              </div>
+
 
                 {/* Save Button */}
                 <div className="mt-6 flex justify-end">
@@ -361,10 +406,156 @@ const AlarmPage = () => {
                     </button>
                 </div>
             </div>
+            </div>
+        </section>
+
+        {/* Event Section */}
+        <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-5">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800">Event</h2>
+            <p className="text-sm text-gray-500">List of recent events</p>
+          </div>
+          <button className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            View All
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  No
+                </th>
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Activation Time
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentEvents.map((event) => (
+                <tr key={event.id} className="hover:bg-gray-50 transition">
+                  <td className="p-3 text-sm text-gray-700 font-medium">
+                    {event.id}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700">
+                    {event.description}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700">
+                    {event.activationTime}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination Section */}
+          <div className="flex flex-col md:flex-row items-center justify-between mt-4 space-y-3 md:space-y-0">
+            <p className="text-sm text-gray-500">
+              {indexOfFirstItem + 1} to{" "}
+              {Math.min(indexOfLastItem, dummyEvents.length)} of{" "}
+              {dummyEvents.length} entries
+            </p>
+
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={handlePrev}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+              >
+                &lt;
+              </button>
+              <span className="text-sm font-medium text-gray-700">
+                {currentPage}
+              </span>
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+              >
+                &gt;
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-2 text-xs text-gray-400">
+            *Table menampilkan maksimal 10 data per halaman. Gunakan tombol panah
+            untuk melihat halaman berikutnya.
+          </p>
         </div>
         </section>
 
+ 
+        {/* Alarm Section */}
+        <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">Alarms</h2>
+              <p className="text-sm text-gray-500">List of recent alarms</p>
+            </div>
+            <button className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+              View All
+            </button>
+          </div>
 
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    No
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Description
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Activation Time
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Termination Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-3 text-sm text-gray-700 font-medium">1</td>
+                  <td className="p-3 text-sm text-gray-700">Alarm 1</td>
+                  <td className="p-3 text-sm text-gray-700">2023-08-01 10:00:00</td>
+                  <td className="p-3 text-sm text-gray-700">2023-08-01 11:00:00</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* pagination */}
+            <div className="flex items-center justify-between mt-4 space-y-3 md:space-y-0">
+              <p className="text-sm text-gray-500">
+                1 to 10 of 100 entries
+              </p>
+              <div className="flex items-center space-x-2">
+                <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100">
+                  &lt;
+                </button>
+                <span className="text-sm font-medium text-gray-700">1</span>
+                <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100">
+                  &gt;
+                </button>
+              </div>
+            </div>
+
+            <p className="mt-2 text-xs text-gray-400">
+              *Table menampilkan maksimal 10 data per halaman. Gunakan tombol panah
+              untuk melihat halaman berikutnya.
+            </p>
+            
+          </div>
+
+
+        </section>
+      
 
         </DashboardLayout>
     );
