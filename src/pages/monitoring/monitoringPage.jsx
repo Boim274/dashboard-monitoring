@@ -56,7 +56,7 @@ const MonitoringPage = () => {
     },
   };
 
-  const [selectedArea, setSelectedArea] = useState("ALL");
+  const [selectedArea, setSelectedArea] = useState("Area: ALL");
   const [selectedSensor, setSelectedSensor] = useState("");
   const [showSensorDropdown, setShowSensorDropdown] = useState(false);
   const [showAreaDropdown, setShowAreaDropdown] = useState(false);
@@ -66,7 +66,7 @@ const MonitoringPage = () => {
 
   const allAreas = Object.keys(sensorDataByArea);
   const sensorsForSelectedArea =
-    selectedArea !== "ALL"
+    selectedArea !== "Area: ALL"
       ? Object.keys(sensorDataByArea[selectedArea])
       : allAreas.flatMap((area) => Object.keys(sensorDataByArea[area]));
 
@@ -92,7 +92,7 @@ const MonitoringPage = () => {
 
   if (selectedSensor) {
     // Jika sensor dipilih → tampilkan 1 chart
-    if (selectedArea !== "ALL") {
+    if (selectedArea !== "Area: ALL") {
       chartDataToDisplay.push({
         area: selectedArea,
         sensor: selectedSensor,
@@ -107,7 +107,7 @@ const MonitoringPage = () => {
         }
       });
     }
-  } else if (selectedArea !== "ALL") {
+  } else if (selectedArea !== "Area: ALL") {
     // Jika area dipilih tapi sensor tidak → tampilkan semua sensor di area tsb
     Object.entries(sensorDataByArea[selectedArea]).forEach(([sensor, data]) => {
       chartDataToDisplay.push({ area: selectedArea, sensor, data });
@@ -145,12 +145,12 @@ const MonitoringPage = () => {
                     <div
                       className="px-4 py-2 hover:bg-indigo-50 cursor-pointer text-gray-700 text-sm"
                       onClick={() => {
-                        setSelectedArea("ALL");
+                        setSelectedArea("Area: ALL");
                         setSelectedSensor("");
                         setShowAreaDropdown(false);
                       }}
                     >
-                      ALL
+                      Area: ALL
                     </div>
                     {allAreas.map((area) => (
                       <div

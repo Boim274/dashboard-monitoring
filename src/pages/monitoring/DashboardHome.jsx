@@ -75,7 +75,7 @@ const Dashboard = () => {
       <div className=" grid grid-cols-1 lg:grid-cols-2 gap-6 mb-5">
         {/* Kiri: Alarm Cards */}
         {/* Alarm Status Card */}
-        <div className="bg-gradient-to-b from-gray-50 to-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-linear-to-b from-gray-50 to-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Alarm Status</h2>
             <span className="text-xs font-medium bg-red-100 text-red-600 px-3 py-1 rounded-full">
@@ -174,43 +174,33 @@ const Dashboard = () => {
                   Name
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
+                  Total
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                  Energy (kWh)
+                  Running
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                  Updated
+                  Stopped
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                  Faulted
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                  Offline
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {[
-                { area: "North Roof", status: "Running", energy: 452, updated: "10:24 AM" },
-                { area: "South Roof", status: "Idle", energy: 198, updated: "10:10 AM" },
-                { area: "West Wing", status: "Error", energy: 0, updated: "09:58 AM" },
-                { area: "East Wing", status: "Running", energy: 530, updated: "10:30 AM" },
+                { name: "Area BE1", total: 1 , running: 0, stopped: 0, faulted: 0, offline: 1 },
               ].map((row, i) => (
-                <tr
-                  key={i}
-                  className="hover:bg-gray-50 transition-colors duration-150"
-                >
-                  <td className="px-6 py-4 text-sm text-gray-800">{row.area}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        row.status === "Running"
-                          ? "bg-green-100 text-green-700"
-                          : row.status === "Idle"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {row.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-700 font-medium">{row.energy}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{row.updated}</td>
+                <tr key={i} className="hover:bg-gray-50 transition-colors duration-150">
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.total}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.running}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.stopped}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.faulted}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{row.offline}</td>
                 </tr>
               ))}
             </tbody>
