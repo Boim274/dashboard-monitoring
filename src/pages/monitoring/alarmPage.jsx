@@ -18,48 +18,100 @@ const AlarmPage = () => {
    
     // Simulasi data sensor
     const sensorDataByArea = {
-        "Area A": {
-          "Sensor Vibrasi A1": [
-            { time: "08:00", x: 2, y: 3, z: 1 },
-            { time: "09:00", x: 4, y: 2, z: 3 },
-            { time: "10:00", x: 3, y: 4, z: 2 },
-          ],
-          "Sensor Suhu A1": [
-            { time: "08:00", value: 28 },
-            { time: "09:00", value: 30 },
-            { time: "10:00", value: 31 },
-          ],
-        },
-        "Area B": {
-          "Sensor Vibrasi B1": [
-            { time: "08:00", x: 1, y: 2, z: 3 },
-            { time: "09:00", x: 2, y: 3, z: 4 },
-            { time: "10:00", x: 3, y: 4, z: 2 },
-          ],
-          "Sensor Tekanan B1": [
-            { time: "08:00", value: 1.2 },
-            { time: "09:00", value: 1.4 },
-            { time: "10:00", value: 1.3 },
-          ],
-        },
-        "Area C": {
-          "Sensor Suhu C1": [
-            { time: "08:00", value: 29 },
-            { time: "09:00", value: 32 },
-            { time: "10:00", value: 33 },
-          ],
-          "Sensor Vibrasi C1": [
-            { time: "08:00", x: 3, y: 2, z: 4 },
-            { time: "09:00", x: 4, y: 3, z: 2 },
-            { time: "10:00", x: 2, y: 4, z: 3 },
-          ],
-          "Sensor Arus C1": [
-            { time: "08:00", value: 4.1 },
-            { time: "09:00", value: 4.3 },
-            { time: "10:00", value: 4.2 },
-          ],
-        },
-      };
+      "BE Area": {
+        "Sensor Vibrasi BE1": [
+          { time: "08:00", x: 2, y: 3, z: 1 },
+          { time: "09:00", x: 4, y: 2, z: 3 },
+          { time: "10:00", x: 3, y: 4, z: 2 },
+        ],
+        "Sensor Suhu BE1": [
+          { time: "08:00", value: 28 },
+          { time: "09:00", value: 30 },
+          { time: "10:00", value: 31 },
+        ],
+      },
+      "Sand Tank Area 1": {
+        "Sensor Vibrasi STA1": [
+          { time: "08:00", x: 1, y: 2, z: 3 },
+          { time: "09:00", x: 2, y: 3, z: 4 },
+          { time: "10:00", x: 3, y: 4, z: 2 },
+        ],
+        "Sensor Tekanan STA1": [
+          { time: "08:00", value: 1.2 },
+          { time: "09:00", value: 1.4 },
+          { time: "10:00", value: 1.3 },
+        ],
+      },
+      "Sand Tank Area 2": {
+        "Sensor Suhu STA2": [
+          { time: "08:00", value: 29 },
+          { time: "09:00", value: 32 },
+          { time: "10:00", value: 33 },
+        ],
+        "Sensor Vibrasi STA2": [
+          { time: "08:00", x: 3, y: 2, z: 4 },
+          { time: "09:00", x: 4, y: 3, z: 2 },
+          { time: "10:00", x: 2, y: 4, z: 3 },
+        ],
+        "Sensor Arus STA2": [
+          { time: "08:00", value: 4.1 },
+          { time: "09:00", value: 4.3 },
+          { time: "10:00", value: 4.2 },
+        ],
+      },
+      "MM Area": {
+        "Sensor Suhu MM": [
+          { time: "08:00", value: 29 },
+          { time: "09:00", value: 32 },
+          { time: "10:00", value: 33 },
+        ],
+        "Sensor Vibrasi MM": [
+          { time: "08:00", x: 3, y: 2, z: 4 },
+          { time: "09:00", x: 4, y: 3, z: 2 },
+          { time: "10:00", x: 2, y: 4, z: 3 },
+        ],
+        "Sensor Arus MM": [
+          { time: "08:00", value: 4.1 },
+          { time: "09:00", value: 4.3 },
+          { time: "10:00", value: 4.2 },
+        ],
+      },
+      "OC Area": {
+        "Sensor Suhu OC": [
+          { time: "08:00", value: 29 },
+          { time: "09:00", value: 32 },
+          { time: "10:00", value: 33 },
+        ],
+        "Sensor Vibrasi OC": [
+          { time: "08:00", x: 3, y: 2, z: 4 },
+          { time: "09:00", x: 4, y: 3, z: 2 },
+          { time: "10:00", x: 2, y: 4, z: 3 },
+        ],
+        "Sensor Arus OC": [
+          { time: "08:00", value: 4.1 },
+          { time: "09:00", value: 4.3 },
+          { time: "10:00", value: 4.2 },
+        ],
+      },
+      "preasure Area": {
+        "Sensor Suhu Preassure": [
+          { time: "08:00", value: 29 },
+          { time: "09:00", value: 32 },
+          { time: "10:00", value: 33 },
+        ],
+        "Sensor Vibrasi preassure": [
+          { time: "08:00", x: 3, y: 2, z: 4 },
+          { time: "09:00", x: 4, y: 3, z: 2 },
+          { time: "10:00", x: 2, y: 4, z: 3 },
+        ],
+        "Sensor Arus Preassure": [
+          { time: "08:00", value: 4.1 },
+          { time: "09:00", value: 4.3 },
+          { time: "10:00", value: 4.2 },
+        ],
+      },
+    };
+  
     
     const [selectedArea, setSelectedArea] = useState("ALL");
     const [selectedSensor, setSelectedSensor] = useState("");

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bell, Menu, User, Settings, LogOut, ChevronDown } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom"; // ⬅️ Tambahkan ini
+import { useNavigate, useLocation, } from "react-router-dom"; // ⬅️ Tambahkan ini
+
 
 const Header = ({ toggleSidebar }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const [openMenu, setOpenMenu] = useState(false);
   const [openNotif, setOpenNotif] = useState(false);
   const menuRef = useRef(null);
@@ -24,7 +26,7 @@ const Header = ({ toggleSidebar }) => {
 
     // Ambil nama berdasarkan path, default fallback jika tidak ada
   const currentTitle = pageTitles[location.pathname] || "Halaman Tidak Dikenal";
-
+    
   // Tutup dropdown saat klik di luar area
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,10 +45,17 @@ const Header = ({ toggleSidebar }) => {
   }, []);
 
   // Fungsi logout
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // hapus token login
-    navigate("/login"); // arahkan ke halaman login
+  const handleLogout = async () => {
+    try {
+      await api.post("/logout");
+    } catch (e) {
+      // backend error? bodo amat, kita tetap logout
+    } finally {
+      localStorage.clear();
+      navigate("/login");
+    }
   };
+  
 
   return (
     <header className="backdrop-blur-md bg-white/70 border-b border-gray-200 shadow-sm h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-40">
@@ -130,11 +139,13 @@ const Header = ({ toggleSidebar }) => {
               className="w-9 h-9 rounded-full border border-gray-300 object-cover shadow-sm"
             />
             <div className="hidden md:flex flex-col text-left">
-              <span className="text-sm font-medium text-gray-800 leading-tight">
-                User
-              </span>
-              <span className="text-xs text-gray-500">Administrator</span>
-            </div>
+            <span className="text-sm font-medium text-gray-800 leading-tight">
+              {user?.name || "User"}
+            </span>
+            <span className="text-xs text-gray-500">
+              {user?.role || "Role"}
+            </span>
+          </div>
             <ChevronDown
               size={16}
               className={`text-gray-500 transition-transform ${

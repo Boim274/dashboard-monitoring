@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import {
   Mail,
@@ -17,20 +18,54 @@ const LoginPage = () => {
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setShow(true);
   }, []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email === "admin@gmail.com" && password === "password") {
-      localStorage.setItem("token", "fake-jwt-token");
-      navigate("/");
-    } else {
-      alert("Email atau password salah!");
+    setLoading(true);
+    setError("");
+  
+    try {
+      const response = await api.post("/login", {
+        email,
+        password,
+      });
+  
+      const { token, user } = response.data;
+  
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+  
+      // delay biar UI gak kayak robot kesurupan
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/");
+      }, 800);
+  
+    } catch (err) {
+      setLoading(false);
+  
+      const message =
+        err.response?.data?.message ||
+        "Email atau password salah";
+  
+      setError(message);
     }
   };
+  
+
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
 
   return (
     <div
@@ -83,7 +118,11 @@ const LoginPage = () => {
           >
             Sign in to continue monitoring your dashboard
           </p>
-
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-2 text-sm text-red-400">
+              {error}
+            </div>
+          )}
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
@@ -188,12 +227,18 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition"
+              disabled={loading}
+              className={`w-full py-2 rounded-lg font-medium transition ${
+                loading
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              } text-white`}
             >
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
             </button>
 
-            <p className="text-center text-sm text-gray-400 mt-4">
+
+            {/* <p className="text-center text-sm text-gray-400 mt-4">
               Don’t have an account?{" "}
               <a
                 href="/register"
@@ -201,7 +246,7 @@ const LoginPage = () => {
               >
                 Sign up
               </a>
-            </p>
+            </p> */}
           </form>
         </div>
       </div>

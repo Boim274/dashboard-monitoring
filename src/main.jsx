@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<LoginPage />} />
 
         {/* Register route */}
-        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/register" element={<RegisterPage />} /> */}
 
         {/* Protected routes */}
         <Route

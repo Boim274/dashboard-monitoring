@@ -6,8 +6,23 @@ import { useState } from "react";
 
 const DevicePage = () => {
     const [openModal, setOpenModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
+    const [selectedItem, setSelectedItem] = useState(null);
+  
+    const handleEdit = (item) => {
+      setSelectedItem(item);
+      setShowEditModal(true);
+    };
+  
+    const handleDelete = (item) => {
+      setSelectedItem(item);
+      setShowDeleteModal(true);
+    };
 
     return (
+        
         <DashboardLayout>
             {/* Filter Device */}
             <section className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-4">
@@ -183,15 +198,34 @@ const DevicePage = () => {
 
                     {/* ✅ Action HARUS di dalam <td>, bukan <div> */}
                     <td className="p-3">
-                        <div className="flex items-center gap-2">
-                        <button className="px-3 py-1.5 bg-yellow-600 text-white text-sm font-semibold rounded-lg hover:bg-yellow-700 active:scale-95 transition">
-                            <Edit />
+                    <div className="flex items-center gap-2">
+                        <button
+                        onClick={() =>
+                            handleEdit({
+                            id: 1,
+                            name: "Vibration BE1",
+                            category: "Vibration",
+                            serial: "123456789",
+                            area: "Area BE1",
+                            })
+                        }
+                        className="px-3 py-1.5 bg-yellow-600 text-white text-sm font-semibold rounded-lg hover:bg-yellow-700 active:scale-95 transition"
+                        >
+                        <Edit size={18} />
                         </button>
 
-                        <button className="px-3 py-1.5 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 active:scale-95 transition">
-                            <Trash />
+                        <button
+                        onClick={() =>
+                            handleDelete({
+                            id: 1,
+                            name: "Vibration BE1",
+                            })
+                        }
+                        className="px-3 py-1.5 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 active:scale-95 transition"
+                        >
+                        <Trash size={18} />
                         </button>
-                        </div>
+                    </div>
                     </td>
                     </tr>
 
@@ -220,6 +254,105 @@ const DevicePage = () => {
                     untuk melihat halaman berikutnya.
                 </p>
             </section>
+            {showEditModal && (
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl animate-fadeIn p-6 relative">
+
+                {/* Title */}
+                <h2 className="text-xl font-bold text-gray-900 mb-6">
+                    Edit Device
+                </h2>
+
+                {/* Form */}
+                <div className="grid grid-cols-1 gap-4">
+                    <div>
+                    <label className="text-sm font-semibold text-gray-700">Device Name</label>
+                    <input
+                        defaultValue={selectedItem?.name}
+                        className="mt-1 w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                    />
+                    </div>
+
+                    <div>
+                    <label className="text-sm font-semibold text-gray-700">Category</label>
+                    <input
+                        defaultValue={selectedItem?.category}
+                        className="mt-1 w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                    />
+                    </div>
+
+                    <div>
+                    <label className="text-sm font-semibold text-gray-700">Serial Number</label>
+                    <input
+                        defaultValue={selectedItem?.serial}
+                        className="mt-1 w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                    />
+                    </div>
+
+                    <div>
+                    <label className="text-sm font-semibold text-gray-700">Assigned Area</label>
+                    <input
+                        defaultValue={selectedItem?.area}
+                        className="mt-1 w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                    />
+                    </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3 mt-8">
+                    <button
+                    onClick={() => setShowEditModal(false)}
+                    className="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium transition"
+                    >
+                    Close
+                    </button>
+
+                    <button
+                    onClick={() => setShowEditModal(false)}
+                    className="px-5 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow-sm transition"
+                    >
+                    Save
+                    </button>
+                </div>
+                </div>
+            </div>
+            )}
+
+            {showDeleteModal && (
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl animate-fadeIn p-6 text-center">
+
+                <div className="mx-auto mb-4 w-12 h-12 flex items-center justify-center bg-red-100 text-red-600 rounded-full">
+                    <Trash size={22} />
+                </div>
+
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    Delete Item
+                </h2>
+
+                <p className="text-gray-600 text-sm mb-6">
+                    Device <span className="font-semibold text-gray-800">{selectedItem?.name}</span> will be permanently deleted.
+                </p>
+
+                <div className="flex justify-center gap-3">
+                    <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium transition"
+                    >
+                    Cancel
+                    </button>
+
+                    <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className="px-5 py-2.5 rounded-xl bg-red-600 text-white hover:bg-red-700 font-semibold shadow-sm transition"
+                    >
+                    Delete
+                    </button>
+                </div>
+
+                </div>
+            </div>
+            )}
             
         </DashboardLayout>
     );

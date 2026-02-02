@@ -23,6 +23,7 @@ const DashboardLayout = ({ children }) => {
         <Header toggleSidebar={toggleSidebar} />
         <main className="p-6">{children}</main>
       </div>
+
     </div>
   );
 };

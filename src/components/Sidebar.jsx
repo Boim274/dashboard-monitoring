@@ -86,10 +86,10 @@ const Sidebar = ({ isOpen }) => {
       </div>
 
       {/* Logout */}
-      <div className="px-6 py-4 border-t border-gray-700 hover:bg-gray-800 transition cursor-pointer flex items-center gap-3 text-sm text-gray-400 hover:text-white">
+      {/* <div className="px-6 py-4 border-t border-gray-700 hover:bg-gray-800 transition cursor-pointer flex items-center gap-3 text-sm text-gray-400 hover:text-white">
         <LogOut size={18} />
         Logout
-      </div>
+      </div> */}
     </div>
   );
 };

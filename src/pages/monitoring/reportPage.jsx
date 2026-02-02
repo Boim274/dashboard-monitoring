@@ -73,82 +73,70 @@ const ReportPage = () => {
             </div>
             </section>
 
-            {/* TABEL REPORT */}
-            <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-5">
-                <div className="flex items-center justify-between mb-4">
+            {/* REPORT TABLE */}
+            <section className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-6">
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-5">
                 <div>
-                    <h2 className="text-lg font-semibold text-gray-800">Report</h2>
-                    {/* <p className="text-sm text-gray-500">List of recent events</p> */}
+                <h2 className="text-xl font-semibold text-gray-900">Report</h2>
+                <p className="text-sm text-gray-500">Latest device activity records</p>
                 </div>
-                <button className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition">
-                    View All
+
+                <button className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition active:scale-95">
+                View All
+                </button>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto border border-gray-100 rounded-xl">
+                <table className="min-w-full border-collapse">
+                <thead>
+                    <tr className="bg-gray-50 text-gray-600 border-b border-gray-200">
+                    {["No", "Device Name", "Serial Number", "Area", "Download"].map((item) => (
+                        <th
+                        key={item}
+                        className="p-3 text-left text-xs font-semibold uppercase tracking-wide"
+                        >
+                        {item}
+                        </th>
+                    ))}
+                    </tr>
+                </thead>
+
+                <tbody className="divide-y divide-gray-100">
+                    <tr className="hover:bg-gray-50 transition">
+                    <td className="p-3 text-sm text-gray-700">1</td>
+                    <td className="p-3 text-sm font-medium text-gray-800">Vibration BE1</td>
+                    <td className="p-3 text-sm text-gray-700">2500201001</td>
+                    <td className="p-3 text-sm text-gray-700">Area BE1</td>
+                    <td className="p-3 text-sm text-blue-600 hover:text-blue-800 cursor-pointer transition">
+                        <Download />
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+
+            {/* Pagination */}
+            <div className="flex flex-col md:flex-row items-center justify-between mt-5 gap-3">
+                <p className="text-sm text-gray-500">1 to 10 of 100</p>
+
+                <div className="flex items-center gap-2">
+                <button className="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 active:scale-95 transition">
+                    &lt;
+                </button>
+                <span className="text-sm font-medium text-gray-700">1</span>
+                <button className="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 active:scale-95 transition">
+                    &gt;
                 </button>
                 </div>
+            </div>
 
-                <div className="overflow-x-auto">
-                <table className="min-w-full border-collapse">
-                    <thead>
-                    <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        No
-                        </th>
-                        <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Device Name
-                        </th>
-                        <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Serial Number
-                        </th>
-                        <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Area
-                        </th>
-                        <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Download
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr  className="hover:bg-gray-50 transition">
-                        <td className="p-3 text-sm text-gray-700">
-                        1
-                        </td>
-                        <td className="p-3 text-sm text-gray-700 font-medium">
-                        Vibration BE1
-                        </td>
-                        <td className="p-3 text-sm text-gray-700">
-                        2500201001
-                        </td>
-                        <td className="p-3 text-sm text-gray-700">
-                        Area BE1
-                        </td>
-                        <td className="p-3 text-sm text-gray-700">
-                        <Download></Download>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <p className="mt-3 text-xs text-gray-400">
+                *Menampilkan maksimal 10 data per halaman. Gunakan tombol navigasi untuk melihat halaman berikutnya.
+            </p>
 
-                {/* Pagination Section */}
-                <div className="flex flex-col md:flex-row items-center justify-between mt-4 space-y-3 md:space-y-0">
-                    <p className="text-sm text-gray-500">
-                    1 to 10 of 100
-                    </p>
-
-                    <div className="flex items-center space-x-2">
-                    <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-40">&lt;
-                    </button>
-                    <span className="text-sm font-medium text-gray-700">
-                    1
-                    </span>
-                    <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-40">&gt;
-                    </button>
-                    </div>
-                </div>
-
-                <p className="mt-2 text-xs text-gray-400">
-                    *Table menampilkan maksimal 10 data per halaman. Gunakan tombol panah
-                    untuk melihat halaman berikutnya.
-                </p>
-                </div>
             </section>
 
         </DashboardLayout>
