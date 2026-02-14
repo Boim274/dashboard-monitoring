@@ -31,19 +31,6 @@ const AlarmPage = () => {
     highText: "",
   });
   const isDisabled = !selectedVariable;
-  const [toast, setToast] = useState({
-    show: false,
-    message: "",
-    type: "success", // success | error
-  });
-  const showToast = (message, type = "success") => {
-    setToast({ show: true, message, type });
-  
-    setTimeout(() => {
-      setToast(prev => ({ ...prev, show: false }));
-    }, 2500);
-  };
-  
   
   
   // Ambil Area dari API
@@ -213,18 +200,22 @@ const AlarmPage = () => {
       };
     
       try {
-        await api.post("/alarms", payload);
+        // langsung POST, biar bisa tambah alarm baru
+        const res = await api.post("/alarms", payload);
     
-        showToast("Alarm saved successfully 🚀", "success");
+        // reset form
+        setAlarmForm({ lowValue: "", lowText: "", highValue: "", highText: "" });
+        setEnabled(false);
     
+        alert("Alarm created 🚀");
+        
       } catch (err) {
-        console.error(err);
-        showToast("Failed to save alarm ❌", "error");
+        console.error(err.response?.data);
       } finally {
         setLoading(false);
       }
     };
-    
+
     // Ketika pilih sensor baru
 const handleSelectSensor = (sensor) => {
   setSelectedSensor(sensor);
@@ -405,113 +396,168 @@ const handleSelectSensor = (sensor) => {
               </p>
             </div>
 
-            
             {/* Form */}
-            <div className={`space-y-5 ${isDisabled ? "opacity-50 pointer-events-none" : ""}`}>
+            <div className={`space-y-4 ${isDisabled ? "opacity-50 pointer-events-none" : ""}`}>
+              <input
+                type="number"
+                placeholder="Alarm Low Value"
+                value={alarmForm.lowValue}
+                onChange={(e) => handleChange("lowValue", e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+              />
 
-              {/* LOW VALUE */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-600">
-                  Alarm Low Value
-                </label>
-                <input
-                  type="number"
-                  value={alarmForm.lowValue}
-                  onChange={(e) => handleChange("lowValue", e.target.value)}
-                  placeholder="contoh: 10"
-                  className={`w-full px-4 py-2 rounded-xl border bg-gray-50 transition
-                    ${!alarmForm.lowValue ? "text-gray-400 border-gray-200" : "text-gray-800 border-gray-300"}
-                    focus:ring-2 focus:ring-blue-500 outline-none`}
-                />
-              </div>
+              <textarea
+                placeholder="Alarm Low Text"
+                value={alarmForm.lowText}
+                onChange={(e) => handleChange("lowText", e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+              />
 
-              {/* LOW TEXT */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-600">
-                  Alarm Low Message
-                </label>
-                <textarea
-                  value={alarmForm.lowText}
-                  onChange={(e) => handleChange("lowText", e.target.value)}
-                  placeholder="Pesan saat nilai terlalu rendah"
-                  className={`w-full px-4 py-2 rounded-xl border bg-gray-50 transition resize-none
-                    ${!alarmForm.lowText ? "text-gray-400 border-gray-200" : "text-gray-800 border-gray-300"}
-                    focus:ring-2 focus:ring-blue-500 outline-none`}
-                />
-              </div>
+              <input
+                type="number"
+                placeholder="Alarm High Value"
+                value={alarmForm.highValue}
+                onChange={(e) => handleChange("highValue", e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+              />
 
-              {/* HIGH VALUE */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-600">
-                  Alarm High Value
-                </label>
-                <input
-                  type="number"
-                  value={alarmForm.highValue}
-                  onChange={(e) => handleChange("highValue", e.target.value)}
-                  placeholder="contoh: 90"
-                  className={`w-full px-4 py-2 rounded-xl border bg-gray-50 transition
-                    ${!alarmForm.highValue ? "text-gray-400 border-gray-200" : "text-gray-800 border-gray-300"}
-                    focus:ring-2 focus:ring-blue-500 outline-none`}
-                />
-              </div>
-
-              {/* HIGH TEXT */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-600">
-                  Alarm High Message
-                </label>
-                <textarea
-                  value={alarmForm.highText}
-                  onChange={(e) => handleChange("highText", e.target.value)}
-                  placeholder="Pesan saat nilai terlalu tinggi"
-                  className={`w-full px-4 py-2 rounded-xl border bg-gray-50 transition resize-none
-                    ${!alarmForm.highText ? "text-gray-400 border-gray-200" : "text-gray-800 border-gray-300"}
-                    focus:ring-2 focus:ring-blue-500 outline-none`}
-                />
-              </div>
-
+              <textarea
+                placeholder="Alarm High Text"
+                value={alarmForm.highText}
+                onChange={(e) => handleChange("highText", e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+              />
             </div>
-
 
             {/* Save */}
             <div className="mt-6 flex justify-end">
-            <button
-              disabled={isDisabled || loading}
-              onClick={handleSaveAlarm}
-              className={`px-5 py-2 rounded-xl flex items-center gap-2 shadow-sm transition
-                ${
-                  isDisabled || loading
+              <button
+                disabled={isDisabled || loading}
+                onClick={handleSaveAlarm}
+                className={`px-5 py-2 rounded-lg shadow-sm transition
+                  ${isDisabled
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
-            >
-              {loading && (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              )}
-              {loading ? "Saving..." : "Save Alarm"}
-            </button>
-
+                  }`}
+              >
+                 {loading ? "Saving..." : "Save"}
+              </button>
             </div>
           </div>
             </div>
         </section>
 
-    
-      
-        {toast.show && (
-          <div className="fixed top-6 right-6 z-50 animate-in fade-in slide-in-from-top-2">
-            <div
-              className={`px-5 py-3 rounded-xl shadow-lg text-sm font-medium text-white
-                ${toast.type === "success" ? "bg-green-600" : "bg-red-600"}`}
-            >
-              {toast.message}
-            </div>
+      {/* recent Event Section */}
+      <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-5">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800">Event</h2>
+            <p className="text-sm text-gray-500">List of recent events</p>
           </div>
-        )}
+          <button className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            View All
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  No
+                </th>
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Activation Time
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="p-3 text-sm text-gray-700 font-medium" colSpan={3}>
+                  Tidak ada event
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="mt-2 text-xs text-gray-400">
+            *Event akan ditampilkan jika API tersedia.
+          </p>
+        </div>
+      </section>
+
+
+ 
+        {/* recent Alarm Section */}
+        <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">Alarms</h2>
+              <p className="text-sm text-gray-500">List of recent alarms</p>
+            </div>
+            <button className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+              View All
+            </button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    No
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Description
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Activation Time
+                  </th>
+                  <th className="p-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Termination Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-3 text-sm text-gray-700 font-medium">1</td>
+                  <td className="p-3 text-sm text-gray-700">Alarm 1</td>
+                  <td className="p-3 text-sm text-gray-700">2023-08-01 10:00:00</td>
+                  <td className="p-3 text-sm text-gray-700">2023-08-01 11:00:00</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* pagination */}
+            <div className="flex items-center justify-between mt-4 space-y-3 md:space-y-0">
+              <p className="text-sm text-gray-500">
+                1 to 10 of 100 entries
+              </p>
+              <div className="flex items-center space-x-2">
+                <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100">
+                  &lt;
+                </button>
+                <span className="text-sm font-medium text-gray-700">1</span>
+                <button className="px-3 py-1 text-sm border rounded-lg text-gray-600 hover:bg-gray-100">
+                  &gt;
+                </button>
+              </div>
+            </div>
+
+            <p className="mt-2 text-xs text-gray-400">
+              *Table menampilkan maksimal 10 data per halaman. Gunakan tombol panah
+              untuk melihat halaman berikutnya.
+            </p>
+            
+          </div>
+
+
+        </section>
+      
 
         </DashboardLayout>
-        
     );
 };
 

@@ -272,15 +272,15 @@ const LoginPage = () => {
             />
 
             {/* Teks di bawah gambar */}
-            <p
+            <div
             className={`text-lg font-medium ${
-                isDarkMode ? "text-white/90" : "text-blue-600"
-
+              isDarkMode ? "text-white/90" : "text-blue-600"
             }`}
-            >
+          >
             <p className="text-5xl font-semibold">MONITORING</p>
             <p className="text-2xl font-normal mt-2">SYSTEM</p>
-            </p>
+          </div>
+
         </div>
     </div>
     </div>

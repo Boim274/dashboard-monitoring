@@ -11,11 +11,13 @@ import AreaPage from "./pages/management/areaPages";
 import DevicePage from "./pages/management/devicePage";
 import LoginPage from "./pages/auth/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import RegisterPage from "./pages/auth/RegisterPage";
+// import RegisterPage from "./pages/auth/RegisterPage";
 import "./index.css";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+     <AuthProvider>
     <BrowserRouter>
       <Routes>
         {/* Login route */}
@@ -91,5 +93,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );

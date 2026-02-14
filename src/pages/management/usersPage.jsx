@@ -69,16 +69,16 @@ const UserPage = () => {
           });
       
           fetchUsers();
-        } catch (err) {
-          setAlert({
-            show: true,
-            type: "error",
-            message: err.response?.data?.message || "Gagal menambahkan user",
-          });
-        } finally {
-          setActionLoading(false);
-        }
-    };
+          } catch (err) {
+            setAlert({
+              show: true,
+              type: "error",
+              message: err.response?.data?.message || "Gagal menambahkan user",
+            });
+          } finally {
+            setActionLoading(false);
+          }
+      };
     const handleDelete = (user) => {
       setSelectedUser(user);
       setDeleteModal(true);
@@ -233,7 +233,7 @@ const UserPage = () => {
             {/* Alert */}
             {alert.show && (
             <div
-                className={`fixed top-5 right-5 z-[9999] px-4 py-3 rounded-xl shadow-lg text-sm font-medium
+                className={`fixed top-5 right-5 z-9999 px-4 py-3 rounded-xl shadow-lg text-sm font-medium
                 ${alert.type === "success"
                 ? "bg-green-100 text-green-700"
                 : "bg-red-100 text-red-700"}`}
@@ -243,15 +243,15 @@ const UserPage = () => {
             )}
 
             {/* User Notifikasi Card */}
-            <section className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-4 space-y-4">
+            {/* <section className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-4 space-y-4">
 
-            {/* Header */}
+            
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <h2 className="text-base font-semibold text-gray-800">
                 User Notifikasi
                 </h2>
 
-                {/* Search */}
+               
                 <div className="relative w-full md:w-72">
                 <input
                 type="text"
@@ -267,7 +267,7 @@ const UserPage = () => {
                 </div>
             </div>
 
-            {/* Table */}
+          
             <div className="overflow-x-auto rounded-xl border border-gray-100">
                 <table className="min-w-full border-collapse text-sm">
                 <thead className="bg-gray-50 border-b border-gray-200">
@@ -321,7 +321,7 @@ const UserPage = () => {
                 </table>
             </div>
 
-            </section>
+            </section> */}
 
             {/* User Table Filter */}
             <section className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-4">

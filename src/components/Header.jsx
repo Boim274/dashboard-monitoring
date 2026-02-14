@@ -1,33 +1,32 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Bell, Menu, User, Settings, LogOut, ChevronDown } from "lucide-react";
-import { useNavigate, useLocation, } from "react-router-dom"; // ⬅️ Tambahkan ini
+import { Bell, Menu, User, LogOut, ChevronDown } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-
-const Header = ({ toggleSidebar }) => {
+const Header = ({ toggleSidebar, onOpenProfile }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [openMenu, setOpenMenu] = useState(false);
   const [openNotif, setOpenNotif] = useState(false);
+
   const menuRef = useRef(null);
   const notifRef = useRef(null);
-  const navigate = useNavigate(); // ⬅️ Untuk redirect
+
+  const navigate = useNavigate();
   const location = useLocation();
 
-    // Map untuk mencocokkan path → nama menu
-    const pageTitles = {
-      "/": "Dashboard ",
-      "/monitoring": "Monitoring",
-      "/analysis": "Analysis & Diagnose",
-      "/alarm": "Alarm & Notification",
-      "/report": "Report",
-      "/users": "User Management",
-      "/area": "Area Management",
-      "/device": "Device Management",
-    };
+  const pageTitles = {
+    "/": "Dashboard",
+    "/monitoring": "Monitoring",
+    "/analysis": "Analysis & Diagnose",
+    "/alarm": "Alarm & Notification",
+    "/report": "Report",
+    "/users": "User Management",
+    "/area": "Area Management",
+    "/device": "Device Management",
+  };
 
-    // Ambil nama berdasarkan path, default fallback jika tidak ada
-  const currentTitle = pageTitles[location.pathname] || "Halaman Tidak Dikenal";
-    
-  // Tutup dropdown saat klik di luar area
+  const currentTitle =
+    pageTitles[location.pathname] || "Halaman Tidak Dikenal";
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -40,138 +39,140 @@ const Header = ({ toggleSidebar }) => {
         setOpenNotif(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fungsi logout
-  const handleLogout = async () => {
-    try {
-      await api.post("/logout");
-    } catch (e) {
-      // backend error? bodo amat, kita tetap logout
-    } finally {
-      localStorage.clear();
-      navigate("/login");
-    }
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
-  
 
   return (
-    <header className="backdrop-blur-md bg-white/70 border-b border-gray-200 shadow-sm h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-40">
-      {/* Left: Toggle & Title */}
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-5 md:px-8 bg-white/60 backdrop-blur-xl border-b shadow-sm">
+
+      {/* LEFT */}
+      <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-md hover:bg-gray-100 transition"
+          className="p-2 rounded-xl hover:bg-black/5 transition"
         >
-          <Menu size={22} className="text-gray-700" />
+          <Menu size={22} />
         </button>
 
-        {/* Nama Menu dinamis */}
-        <h1 className="text-lg md:text-xl font-semibold text-gray-800 tracking-tight">
-          {currentTitle}
-        </h1>
+        <h1 className="text-lg font-semibold">{currentTitle}</h1>
       </div>
 
-      {/* Right: Notifications & Profile */}
-      <div className="flex items-center gap-5 md:gap-6">
-        {/* Notifications */}
+      {/* RIGHT */}
+      <div className="flex items-center gap-4">
+
+       
+        {/* NOTIF */}
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => {
               setOpenNotif(!openNotif);
               setOpenMenu(false);
             }}
-            className="relative p-2 rounded-full hover:bg-gray-100 transition"
+            className="relative p-2 rounded-xl hover:bg-black/5 transition"
           >
-            <Bell size={22} className="text-gray-700" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-semibold shadow-sm">
+            <Bell size={20} />
+
+            {/* badge */}
+            <span className="absolute -top-1 -right-1 text-[10px] bg-red-500 text-white px-1.5 py-[1px] rounded-full">
               3
             </span>
           </button>
 
           {openNotif && (
-            <div className="absolute right-0 mt-3 w-80 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-100 py-2 animate-fadeIn">
-              <div className="px-4 py-2 border-b border-gray-100">
-                <h3 className="text-sm font-semibold text-gray-700">
-                  Notifikasi
-                </h3>
+            <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden animate-in fade-in zoom-in-95">
+
+              {/* header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50">
+                <p className="text-sm font-semibold">Notifications</p>
+                <span className="text-xs text-gray-400">3 new</span>
               </div>
-              <ul className="max-h-64 overflow-y-auto divide-y divide-gray-100">
+
+              {/* list */}
+              <div className="max-h-80 overflow-y-auto divide-y">
+
                 {[
-                  "🔋 Sistem PV sedang diperbarui",
-                  "☀️ Daya puncak hari ini tercapai",
-                  "⚙️ Maintenance dijadwalkan besok",
-                ].map((notif, i) => (
-                  <li
+                  { title: "Sensor X Overheat", time: "2 min ago" },
+                  { title: "Device Offline - Area 3", time: "10 min ago" },
+                  { title: "Pressure abnormal", time: "1 hour ago" },
+                ].map((item, i) => (
+                  <div
                     key={i}
-                    className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer transition"
+                    className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition flex flex-col"
                   >
-                    {notif}
-                  </li>
+                    <span className="text-sm font-medium text-gray-800">
+                      {item.title}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {item.time}
+                    </span>
+                  </div>
                 ))}
-              </ul>
-              <div className="px-4 py-2 border-t border-gray-100 text-center">
-                <a
-                  href="#"
-                  className="text-blue-600 text-sm hover:underline font-medium"
-                >
-                  Lihat semua notifikasi
-                </a>
               </div>
+
+              {/* footer */}
+              <button
+                onClick={() => navigate("/alarm")}
+                className="w-full text-sm py-2 bg-gray-50 hover:bg-gray-100 transition"
+              >
+                View all notifications
+              </button>
             </div>
           )}
         </div>
 
-        {/* Profile */}
+
+
+        {/* PROFILE */}
         <div className="relative" ref={menuRef}>
-          <button
-            onClick={() => {
-              setOpenMenu(!openMenu);
-              setOpenNotif(false);
-            }}
-            className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 px-2 md:px-3 py-1 rounded-full transition"
-          >
-            <img
-              src="https://i.pravatar.cc/40?img=12"
-              alt="Profile"
-              className="w-9 h-9 rounded-full border border-gray-300 object-cover shadow-sm"
-            />
-            <div className="hidden md:flex flex-col text-left">
-            <span className="text-sm font-medium text-gray-800 leading-tight">
-              {user?.name || "User"}
-            </span>
-            <span className="text-xs text-gray-500">
-              {user?.role || "Role"}
-            </span>
-          </div>
-            <ChevronDown
-              size={16}
-              className={`text-gray-500 transition-transform ${
-                openMenu ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          </button>
+        <button
+        onClick={() => {
+          setOpenMenu(!openMenu);
+          setOpenNotif(false);
+        }}
+        className="flex items-center gap-3 px-3 py-1.5 rounded-2xl hover:bg-black/5 transition"
+      >
+        <img
+          src="https://i.pravatar.cc/40?img=12"
+          className="w-9 h-9 rounded-full border border-white shadow-sm"
+        />
+
+        {/* 👇 ini tambahan */}
+        <div className="hidden md:flex flex-col text-left leading-tight">
+          <span className="text-sm font-semibold text-gray-800">
+            {user?.name || "User"}
+          </span>
+          <span className="text-xs text-gray-500">
+            {user?.role || "Role"}
+          </span>
+        </div>
+
+        <ChevronDown size={16} />
+      </button>
+
 
           {openMenu && (
-            <div className="absolute right-0 mt-3 w-52 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-100 py-2 animate-fadeIn">
-              <a
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+            <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl py-2">
+              <button
+                onClick={() => {
+                  onOpenProfile(); // 🔥 trigger layout modal
+                  setOpenMenu(false);
+                }}
+                className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100"
               >
                 <User size={16} /> Profile
-              </a>
-              <a
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
-              >
-                <Settings size={16} /> Settings
-              </a>
-              <hr className="my-1 border-gray-200" />
+              </button>
+
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition text-left"
+                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
               >
                 <LogOut size={16} /> Logout
               </button>

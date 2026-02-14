@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/Dashboardlayout";
-import {  SearchIcon } from "lucide-react";
+import {  SearchIcon, PlusCircle, Edit, Trash} from "lucide-react";
 import api from "../../services/api";
 
 const AreaPage = () => {
+    const [openModal, setOpenModal] = useState(false);
     
     const [areas, setAreas] = useState([]);
     const [meta, setMeta] = useState({
@@ -129,6 +130,17 @@ const AreaPage = () => {
                 <option value="date_oldest">Terlama</option>
                 </select>
 
+                {/* Add Area */}
+                {/* <div className="flex justify-end">
+                    <button
+                    
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 
+                    bg-blue-600 text-white text-sm font-semibold rounded-xl 
+                    hover:bg-blue-700 active:scale-95 transition">
+                    <PlusCircle className="w-5 h-5" />
+                    Tambah Area
+                    </button>
+                    </div> */}
 
                 </div>
             </section>
